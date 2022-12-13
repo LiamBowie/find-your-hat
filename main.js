@@ -5,11 +5,12 @@ const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
-class Field { 
+class Game { 
     constructor(field){ 
         this.field = field;
         this.playerX = 0;
         this.playerY = 0;
+        this.playing = true;
     }
 
     // Updates the players current (x, y) co-ordinates. 
@@ -32,8 +33,10 @@ class Field {
         }
 
         if(this.evaluateCurrentPosition(this.playerX, this.playerY)){ 
-
             this.field[this.playerX][this.playerY] = pathCharacter;
+        }
+        else { 
+            this.playing = false;
         }
     }
 
@@ -73,29 +76,23 @@ class Field {
 
         console.log(string);
     }
+
+    play() { 
+        console.log(`\nUse WASD keys to move your character ${pathCharacter} around the map to find your hat (${hat})`);
+        console.log(`Don't fall in the holes (${hole}), and don't walk off the edge!`);
+        while(this.playing) { 
+            this.print();
+            const move = prompt("Which way?: ");
+            this.movePlayer(move);
+        }
+    }
 }
 
-const gameField = new Field([
+const findYourHat = new Game([
     ['*', '░', 'O'],
     ['░', 'O', '░'],
     ['░', 'O', '░'],
     ['░', '^', '░'],
-  ]);
+]);
 
-gameField.print();
-gameField.movePlayer('s');
-gameField.print();
-gameField.movePlayer('s');
-gameField.print();
-gameField.movePlayer('s');
-gameField.print();
-gameField.movePlayer('d');
-
-
-// console.log(`Use WASD keys to move your character ${pathCharacter} around the map to find your hat (${hat})`);
-// console.log(`Don't fall in the holes (${hole}), and don't walk off the edge!`);
-
-// while(alive) { 
-//     myField.print();
-//     const move = prompt("Which way?: ");
-// }
+findYourHat.play();

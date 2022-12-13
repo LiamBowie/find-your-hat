@@ -68,8 +68,8 @@ class Game {
         let string = '\n';
         for (let i = 0; i < this.field.length; i++) {
             for (let j = 0; j < this.field[i].length; j++) {
-                string += this.field[i][j];
                 
+                string += this.field[i][j];
             }
             string += '\n';
         }
@@ -77,22 +77,48 @@ class Game {
         console.log(string);
     }
 
+    // Prints out instructions for the player and starts the game loop.
     play() { 
         console.log(`\nUse WASD keys to move your character ${pathCharacter} around the map to find your hat (${hat})`);
         console.log(`Don't fall in the holes (${hole}), and don't walk off the edge!`);
+
         while(this.playing) { 
+
             this.print();
             const move = prompt("Which way?: ");
             this.movePlayer(move);
         }
     }
+
+    // Generates a random field with a specified height and width.
+    static generateField(height, width, percentage = 25) { 
+        let field = [];
+        for(let i = 0; i < height; i++) { 
+            field[i] = [];
+            for(let j = 0; j < width; j++) { 
+
+                if ( Math.floor(Math.random() * 100) < percentage) { 
+                    field[i][j] = hole;
+                }
+                else { 
+                    field[i][j] = fieldCharacter;
+                }
+            }
+        }
+
+        field[0][0] = pathCharacter;
+        field[Math.floor(Math.random()*height)][Math.floor(Math.random()*width)] = hat;
+
+        return field;
+    }
 }
 
-const findYourHat = new Game([
-    ['*', '░', 'O'],
-    ['░', 'O', '░'],
-    ['░', 'O', '░'],
-    ['░', '^', '░'],
-]);
+const fyh = new Game(Game.generateField(7, 15));
+fyh.play();
 
-findYourHat.play();
+// const findYourHat = new Game([
+//     ['*', '░', 'O'],
+//     ['░', 'O', '░'],
+//     ['░', 'O', '░'],
+//     ['░', '^', '░'],
+// ]);
